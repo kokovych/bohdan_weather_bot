@@ -4,10 +4,6 @@ from pprint import pprint
 
 WEATHER_URL = "https://www.foreca.com/"
 
-# city = input("Enter city:\n")
-#
-# print(city)
-# print(type(city))
 city = "dnipro"
 
 param = {
@@ -18,17 +14,19 @@ param = {
 response = requests.post(url=WEATHER_URL, data=param)
 
 soup = BeautifulSoup(response.content, 'html.parser')
-#soup = soup.find_all("div", class_="content-right")
 soup = soup.find("dl", class_="in")
 soup = soup.find_all("dd")
 
-# print(soup)
-# print(type(soup))
+
+links = []
 
 for s in soup:
-    print(s.a.get('href'))
-    print(type(s))
-    print('====================')
+    link = WEATHER_URL + s.a.get('href')
+    links.append(link)
 
-# print(response)
-# pprint(response.content)
+print(links)
+
+response = requests.get(url=links[0])
+
+soup = BeautifulSoup(response.content, 'html.parser' )
+print(soup)
