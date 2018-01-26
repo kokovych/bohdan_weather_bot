@@ -3,14 +3,14 @@ from bs4 import BeautifulSoup
 from pprint import pprint
 
 WEATHER_URL = "https://www.foreca.com"
-city = "dnipro"
-param = {
-    "q": city,
-    "do_search": "Find+place"
-}
+#city = "dnipro"
 
 
-def get_city():
+def get_city(city):
+    param = {
+        "q": city,
+        "do_search": "Find+place"
+    }
     response = requests.post(url=WEATHER_URL, data=param)
     soup = BeautifulSoup(response.content, 'html.parser')
     soup = soup.find("dl", class_="in")
@@ -26,24 +26,23 @@ def get_city():
 def weather_data(city_link):
     response = requests.get(url=city_link)
     soup = BeautifulSoup(response.content, 'html.parser' )
-    #print(soup)
     temperature = soup.find("span", class_='cold txt-xxlarge').get_text()
-    print(temperature)
     wind_speed = soup.find("span", class_='cold txt-xxlarge').strong.findNext("strong").get_text()
-    print(wind_speed)
     info = soup.find("div", class_="right txt-tight").get_text()
-    print (info)
     meteogram = soup.find("div", class_="meteogram").img['src']
-    print(meteogram)
-    print(type(meteogram))
     meteogram_url = WEATHER_URL + meteogram
-    print(meteogram_url)
+
     return temperature, wind_speed, info, meteogram_url
 
 
 def main():
-    links = get_city()
+    links = get_city(city="dnipro")
     temperature, wind_speed, info, meteogram_url = weather_data(links[0])
+    print(temperature)
+    print(wind_speed)
+    print (info)
+    print(meteogram_url)
+
 
 if __name__ == "__main__":
     main()

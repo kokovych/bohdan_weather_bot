@@ -1,3 +1,4 @@
 .env_telegram_bot/*
 .idea/*
 my_constants.py
+__pycache__/*
