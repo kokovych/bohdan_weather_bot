@@ -85,5 +85,9 @@ def handle_text(message):
                                  reply_markup=user_markup)
 
 
-if __name__ == "__main__":
+def start_bot():
     bot.polling(none_stop=True, interval=0)
+
+
+if __name__ == "__main__":
+    start_bot()
