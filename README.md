@@ -50,7 +50,7 @@ token = "YOUR_TELEGRAM_BOT_TOKEN_HERE"
 python telegram_bot.py
 ```
 
-####Additional
+#### Additional
 
 I run this bot on my AWS as daemon.
 I used for it cron:
@@ -65,7 +65,7 @@ and add my script execution
 
 [Crontab – Quick Reference](http://www.adminschoice.com/crontab-quick-reference)
 
-####Contact
+#### Contact
 
 You can contact with me:
 
