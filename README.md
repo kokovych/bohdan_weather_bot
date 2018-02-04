@@ -53,7 +53,14 @@ python telegram_bot.py
 #### Additional
 
 I run this bot on my AWS as daemon.
-I used for it cron:
+
+```
+(.env_telegram_bot) $ python telegram_bot.py &
+```
+(& - ampersand symbol in the end)
+
+
+On my local machine I used for it cron:
 ```
 crontab -e
 ```
