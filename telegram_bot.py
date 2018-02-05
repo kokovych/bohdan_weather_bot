@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import telebot
 import my_constants
 
@@ -23,25 +25,54 @@ AFTER TOMORROW
 {aftertomorrow_minmax}
 """
 
+help_text = '''
+Enter your city and I'll send your current weather and short forecast
+
+/help - help
+/language - choose language
+ 
+'''
+
 @bot.message_handler(commands=['help'])
 def handle_help_commands(message):
-    help_text = '''
-    Enter your city and I'll send your current weather and short forecast 
-    '''
     bot.send_message(message.from_user.id, help_text)
 
 
 @bot.message_handler(commands=['start'])
 def handle_help_commands(message):
-    help_text = '''
-    Enter  your city and I'll send your current weather and short forecast 
-    '''
     bot.send_message(message.from_user.id, help_text)
 
+
+@bot.message_handler(commands=['language'])
+def handle_help_commands(message):
+    keyboard = [
+        [telebot.types.InlineKeyboardButton("Option 1", callback_data='1')]
+        ]
+    reply_markup = telebot.types.ReplyKeyboardMarkup(
+        resize_keyboard=True, one_time_keyboard=True
+    )
+    reply_markup.row("ENGLISH", "RUSSIAN")
+    bot.send_message(
+        message.from_user.id,
+        "Choose your language: ",
+        reply_markup=reply_markup
+    )
 
 @bot.message_handler(content_types=['text'])
 def handle_text(message):
     name = message.text
+    if name == "ENGLISH":
+        bot.send_message(
+            message.from_user.id, 
+            "Your language is English"
+        )
+        return None
+    if name == "RUSSIAN":
+        bot.send_message(
+            message.from_user.id, 
+            "Твой язык - русский"
+        )
+        return None
     if len(name) < 3:
         bot.send_message(message.from_user.id, "Too small quantity of letters in city name!")
     else:
@@ -76,6 +107,7 @@ def handle_text(message):
                 bot.send_message(message.from_user.id, "No results.")
             else:
                 user_markup = telebot.types.ReplyKeyboardMarkup(
+                    resize_keyboard=True,
                     one_time_keyboard=True)
                 user_markup.row("/help")
                 for city in cities:
