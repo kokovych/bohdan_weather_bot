@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 
-WEATHER_URL = "https://www.foreca.com"
+WEATHER_URL = "https://www.foreca.com/"
 
 
 def get_city(city):
@@ -28,6 +28,15 @@ def get_city(city):
             city = city.get('action')
             cities.append(city)
     return cities
+
+
+def get_city_multi(city):
+    search_url = "https://www.foreca.com/json-complete.php?term=" + city
+    print(search_url)
+    response = requests.get(url=search_url)
+    print (response)
+    print (response.content)
+
 
 
 def weather_data(city_link):
@@ -73,8 +82,9 @@ def get_title_and_minmax(c2_a):
 
 
 def main():
-    cities = get_city(city="dniprorrr")
-    print(cities)
+    get_city_multi(city="dnip")
+    # cities = get_city(city="dniprorrr")
+    # print(cities)
     # temperature, wind_speed, info, meteogram_url = weather_data(links[0])
     # print(temperature)
     # print(wind_speed)
