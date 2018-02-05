@@ -46,7 +46,7 @@ def handle_text(message):
         bot.send_message(message.from_user.id, "Too small quantity of letters in city name!")
     else:
         if "/" in name:
-            temperature, wind_speed, info, short_forecast = weather_data(WEATHER_URL+name)
+            temperature, wind_speed, info, short_forecast = weather_data(WEATHER_URL+name+"?quick_units=metric&tf=24&lang=ru")
             today_title = short_forecast.get("today_title")
             today_minmax = short_forecast.get("today_minmax")
 
