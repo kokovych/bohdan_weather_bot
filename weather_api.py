@@ -1,42 +1,30 @@
+# -*- coding: utf-8 -*-
+
+import json
 import requests
 from bs4 import BeautifulSoup
 
 WEATHER_URL = "https://www.foreca.com/"
 
 
-def get_city(city):
-    param = {
-        "q": city,
-        "do_search": "Find+place"
-    }
-    cities = []
-    response = requests.post(url=WEATHER_URL, data=param)
-    html = BeautifulSoup(response.content, 'html.parser')
-    content_right = html.find('div', class_='content-right')
-    clearb = content_right.find('div', class_='clearb').findNext('p').get_text()
-    if clearb == "No results.":
-        cities.append("No results.")
-    soup = content_right.find("dl", class_="in")
-    if soup is not None:
-        soup = soup.find_all("dd")
-        for s in soup:
-            cities.append(s.a.get('href'))
-        return cities
-    else:
-        city = content_right.find('form', method='post')
-        if city is not None:
-            city = city.get('action')
-            cities.append(city)
-    return cities
-
-
 def get_city_multi(city):
     search_url = "https://www.foreca.com/json-complete.php?term=" + city
-    print(search_url)
     response = requests.get(url=search_url)
-    print (response)
-    print (response.content)
+    cities = response.text
+    cities = json.loads(cities)
+    return cities
 
+def get_city_page(label, country_name):
+    param = {
+        'loc_id': str(label),
+        'q': country_name
+    }
+    # headers = {
+    #     'Content-Type': 'application/x-www-form-urlencoded'
+    # }
+    response = requests.post(url=WEATHER_URL, data=param)
+    city_url = response.url
+    return city_url
 
 
 def weather_data(city_link):
@@ -82,9 +70,12 @@ def get_title_and_minmax(c2_a):
 
 
 def main():
-    get_city_multi(city="dnip")
+    cities = get_city_multi(city="dnipro")
     # cities = get_city(city="dniprorrr")
-    # print(cities)
+    print(cities)
+    label = 100709930
+    country_name = "Dnipropetrovs'ka Oblast', Ukraine"
+    get_city_page(label, country_name)
     # temperature, wind_speed, info, meteogram_url = weather_data(links[0])
     # print(temperature)
     # print(wind_speed)
