@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# for running this script, please use: . ./run_source
+# (note, we use 2 dots!!!)
+
+
+source /home/bohdan/my_code/telegram_bot/bohdan_weather_bot/.env_telegram_bot/bin/activate
