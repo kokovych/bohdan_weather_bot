@@ -7,23 +7,24 @@ from bs4 import BeautifulSoup
 WEATHER_URL = "https://www.foreca.com/"
 
 
-def get_city_multi(city):
-    search_url = "https://www.foreca.com/json-complete.php?term=" + city
+def get_city_multi(city, search_url):
+    search_url = search_url + city
     response = requests.get(url=search_url)
     cities = response.text
     cities = json.loads(cities)
     return cities
 
-def get_city_page(label, country_name):
-    param = {
+def get_city_page(label,country_name):
+    params = {
         'loc_id': str(label),
         'q': country_name
     }
     # headers = {
     #     'Content-Type': 'application/x-www-form-urlencoded'
     # }
-    response = requests.post(url=WEATHER_URL, data=param)
+    response = requests.post(url=WEATHER_URL, data=params)
     city_url = response.url
+    print (city_url)
     return city_url
 
 
@@ -31,13 +32,14 @@ def weather_data(city_link):
     response = requests.get(url=city_link)
     soup = BeautifulSoup(response.content, 'html.parser' )
     temperature = soup.find("div", class_='left').span.get_text()
+    location = soup.find("h1", class_='entry-title').get_text()
     wind_speed = soup.find("div", class_='left').strong.findNext("strong").get_text()
     info = soup.find("div", class_="right txt-tight").get_text()
     info = info.replace('\r', '').replace('\t', '').replace('\n\n', '\n')#.replace(' ', '')
     while '  ' in info:
         info = info.replace('  ', ' ')
-    # meteogram = soup.find("div", class_="meteogram").img['src']
-    # meteogram_url = WEATHER_URL + meteogram
+    meteogram = soup.find("div", class_="meteogram").img['src']
+    meteogram_url = WEATHER_URL + meteogram[1:]
     c2 = soup.find("div", class_="c2")
     short_forecast = {}
 
@@ -59,7 +61,7 @@ def weather_data(city_link):
     short_forecast["aftertomorrow_title"] = aftertomorrow_title
     short_forecast["aftertomorrow_minmax"] = aftertomorrow_minmax
 
-    return temperature, wind_speed, info, short_forecast
+    return location, temperature, wind_speed, info, short_forecast, meteogram_url
 
 
 def get_title_and_minmax(c2_a):
@@ -72,7 +74,6 @@ def get_title_and_minmax(c2_a):
 def main():
     cities = get_city_multi(city="dnipro")
     # cities = get_city(city="dniprorrr")
-    print(cities)
     label = 100709930
     country_name = "Dnipropetrovs'ka Oblast', Ukraine"
     get_city_page(label, country_name)
