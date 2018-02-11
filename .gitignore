@@ -4,3 +4,4 @@ my_constants.py
 __pycache__/*
 .vscode/*
 meteograms/meteogr*
+logs/*
