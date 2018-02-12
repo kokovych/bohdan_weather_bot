@@ -44,8 +44,8 @@ choosen_location_ru = "* %s Вы выбрали город *"%(earth)
 search_url_en = "https://www.foreca.com/json-complete.php?lang=en&term="
 search_url_ru = "https://www.foreca.com/json-complete.php?lang=ru&term="
 
-param_en="?quick_units=metric&tf=24&lang=en"
-param_ru="?quick_units=metric&tf=24&lang=ru"
+param_en="?quick_units=metricmmhg&tf=24h&lang=en"
+param_ru="?quick_units=metricmmhg&tf=24h&lang=ru"
 
 help_text_en = '''
 Enter your city and I'll send your current weather and short forecast
