@@ -12,6 +12,7 @@ It can find weather from this service:
 | ------- | ----------- |
 | /help   | display how can you use bot|
 | /start  | the same |
+| /language | choose language(EN, RU)|
 
 For using bot you need to press "start" button and enter your city name
 
@@ -20,6 +21,8 @@ For using bot you need to press "start" button and enter your city name
 I use for this bot python 3.5 and libs from requirements.txt
 
 OS - Linux Mint 18.3
+
+DB - MongoDB
 
 Steps:
 
@@ -40,12 +43,26 @@ $ source .env_telegram_bot/bin/activate
 $ pip install -r requirements.txt
 ```
 
-- create file my_constants.py with your telegram bot token
+- create file in project's root directory my_constants.py with your telegram bot token
 ```
 token = "YOUR_TELEGRAM_BOT_TOKEN_HERE"
 ```
 
-- run bot 
+- install mongodb. I use mongo for data storage about user language choose
+
+```sh
+sudo apt-get install mongodb
+```
+
+- mongo config:
+```
+host:localhost,
+port:27017,
+database: telegram_weather_db,
+collection: mycollection
+```
+
+- run bot :
 ```
 python telegram_bot.py
 ```
@@ -60,11 +77,25 @@ I run this bot on my AWS as daemon.
 (& - ampersand symbol in the end)
 
 
-On my local machine I used for it cron:
+On my local machine I used for it supervisor:
+```sh
+sudo apt-get install supervisor
+sudo service supervisor start
 ```
-crontab -e
+
+Supervisor config(in /etc/supervisor/conf.d/telegram_bot.conf)
+
 ```
-and add my script execution
+[program:telegram_bot]
+priority=10
+command=/home/ubuntu/my_program/bohdan_weather_bot/.env_telegram_bot/bin/python /home/ubuntu/my_program/bohdan_weather_bot/telegram_bot.py
+user=root
+autostart=true
+autorestart=true
+startsecs = 5
+stderr_logfile = /home/ubuntu/my_program/bohdan_weather_bot/logs/err_logs
+stdout_logfile = /home/ubuntu/my_program/bohdan_weather_bot/logs/out_logs
+```
  
 [stackoverflow - python in crontab](https://stackoverflow.com/questions/8727935/execute-python-script-on-crontab)
 
